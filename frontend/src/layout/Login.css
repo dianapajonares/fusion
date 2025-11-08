@@ -1,0 +1,94 @@
+/* ========================================= */
+/* --- ESTILOS GLOBAL DE PÁGINA (Login) --- */
+/* ========================================= */
+
+/* Aplicamos las reglas de centrado TOTAL al cuerpo de la vista del Login.
+   Esto solo afectará a esta página gracias al diseño de React. */
+   .login-page-container { 
+    /* El degradado de fondo que deseas */
+    background: linear-gradient(to right, #e0f7fa, #f1f8e9);
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* --- CONTENEDOR CENTRAL (La Caja del Login) --- */
+.login-container {
+    background-color: white;
+    padding: 2rem 3rem;
+    border-radius: 15px;
+    /* Sombra para darle profundidad */
+    box-shadow: 0 0 15px rgba(0,0,0,0.15); 
+    width: 100%;
+    max-width: 400px; /* Ancho máximo de la caja */
+    text-align: center;
+}
+
+/* ========================================= */
+/* --- ESTILOS DE ELEMENTOS --- */
+/* ========================================= */
+
+.login-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #003366;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    text-align: left;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #37474f;
+}
+
+input {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 1px solid #b0bec5;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+/* --- ESTILOS DEL BOTÓN --- */
+.login-form button {
+    background-color: #003366;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 0.5rem; /* Asegura espacio si los inputs están pegados */
+}
+
+.login-form button:hover {
+    background-color: #0056b3;
+}
+
+/* ========================================= */
+/* --- RESPONSIVE (Móviles) --- */
+/* ========================================= */
+
+@media (max-width: 900px) {
+    .login-wrapper {
+        flex-direction: column;
+        /* Al apilar, el centrado vertical ya está asegurado por align-items: center */
+    }
+
+    .left-panel {
+        height: 150px;
+    }
+
+    .right-panel {
+        flex: auto;
+        padding: 1rem;
+    }
+}
