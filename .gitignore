@@ -1,0 +1,25 @@
+# === BACK =====
+# Ignorar carpetas de entornos virtuales y compilación de Python
+__pycache__/
+*.pyc
+venv/
+.pytest_cache/
+
+# Dependencias del sistema operativo (macOS)
+.DS_Store
+
+# Archivos de la base de datos y credenciales (CRUCIALES)
+.env
+postgres_data/
+
+# === FRONTEND (Vite / React) ===
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/*.log
+frontend/.env
+frontend/.env.production
+
+# === EDITOR ===
+.vscode/
+.idea/
