@@ -17,8 +17,10 @@ frontend/node_modules/
 frontend/dist/
 frontend/.vite/
 frontend/*.log
-frontend/.env
-frontend/.env.production
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
 
 # === EDITOR ===
 .vscode/
