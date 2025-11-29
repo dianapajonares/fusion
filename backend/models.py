@@ -1,57 +1,131 @@
-from sqlalchemy import create_engine, Column, Integer, String, DECIMAL, TIMESTAMP, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from config import SQLALCHEMY_DATABASE_URL
 from datetime import datetime
 
-# 1. Configuración de la Conexión
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+from sqlalchemy import (create_engine,Column, Integer,String,Float,DECIMAL,TIMESTAMP,ForeignKey,DateTime,)
+from sqlalchemy.orm import relationship, declarative_base, sessionmaker
+
+from config import SQLALCHEMY_DATABASE_URL
+
+# Base de SQLAlchemy
 Base = declarative_base()
 
-# 2. Definición de las Clases (Tablas)
+# Motor de conexión
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+# Session
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+
+# =========================
+#   MODELOS DE LA PLATAFORMA
+# =========================
+
+class GlucoseReading(Base):
+    __tablename__ = "glucose_readings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("pacientes.paciente_id"), index=True)
+    timestamp = Column(DateTime, index=True)
+    value_mgdl = Column(Float, nullable=True)
+    cbg_mgdl = Column(Float, nullable=True)
+    ketones_mmol = Column(Float, nullable=True)
+
+    patient = relationship("Patient", back_populates="glucose")
+
+
+class InsulinDose(Base):
+    __tablename__ = "insulin_doses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("pacientes.paciente_id"), index=True)
+    timestamp = Column(DateTime, index=True)
+    sc_insulin = Column(Float, nullable=True)
+    csii_bolus = Column(Float, nullable=True)
+    csii_basal = Column(Float, nullable=True)
+    iv_insulin = Column(Float, nullable=True)
+
+    patient = relationship("Patient", back_populates="insulin")
+
+
+class DietaryIntake(Base):
+    __tablename__ = "dietary_intake"
+
+    id = Column(Integer, primary_key=True, index=True)
+    patient_id = Column(Integer, ForeignKey("pacientes.paciente_id"), index=True)
+    timestamp = Column(DateTime, index=True)
+    dietary = Column(String, nullable=True)      # "Dietary intake"
+    dietary_cn = Column(String, nullable=True)   # "饮食"
+
+    patient = relationship("Patient", back_populates="dietary")
+
+
 class Medico(Base):
     __tablename__ = "medicos"
+
     medico_id = Column(Integer, primary_key=True, index=True)
     nombre = Column(String(100), nullable=False)
+    username = Column(String(50), unique=True, nullable=False)
     email = Column(String(100), unique=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
 
-class Paciente(Base):
+class Patient(Base):
     __tablename__ = "pacientes"
+
     paciente_id = Column(Integer, primary_key=True, index=True)
     nombre_completo = Column(String(150), nullable=False)
     fecha_nacimiento = Column(TIMESTAMP, nullable=False)
     historia_clinica_num = Column(String(50), unique=True, nullable=False)
-    # ESTA COLUMNA ES CRUCIAL Y FALTABA EN LA DB
     fecha_registro = Column(
-        TIMESTAMP, 
-        default=datetime.utcnow, 
-        nullable=False
+        TIMESTAMP,
+        default=datetime.utcnow,
+        nullable=False,
     )
+
+    # Relaciones
+    glucose = relationship("GlucoseReading", back_populates="patient")
+    insulin = relationship("InsulinDose", back_populates="patient")
+    dietary = relationship("DietaryIntake", back_populates="patient")
+    datos_clinicos = relationship("DatosClinicosIngreso", back_populates="paciente")
+    resultados_fusion = relationship("ResultadoFusion", back_populates="paciente")
+
 
 class DatosClinicosIngreso(Base):
     __tablename__ = "datos_clinicos_ingreso"
+
     ingreso_id = Column(Integer, primary_key=True, index=True)
-    paciente_id = Column(Integer, ForeignKey('pacientes.paciente_id'), nullable=False)
-    medico_id = Column(Integer, ForeignKey('medicos.medico_id'), nullable=False)
+    paciente_id = Column(Integer, ForeignKey("pacientes.paciente_id"), nullable=False)
+    medico_id = Column(Integer, ForeignKey("medicos.medico_id"), nullable=False)
     fecha_registro = Column(TIMESTAMP, default=datetime.utcnow, nullable=False)
-    presion_sistolica = Column(Integer) 
+    presion_sistolica = Column(Integer)
     glucosa_ayunas = Column(DECIMAL)
     sintomas_claves = Column(String)
 
+    paciente = relationship("Patient", back_populates="datos_clinicos")
+    medico = relationship("Medico")
+
+
 class ResultadoFusion(Base):
     __tablename__ = "resultados_fusion"
+
     resultado_id = Column(Integer, primary_key=True, index=True)
-    paciente_id = Column(Integer, ForeignKey('pacientes.paciente_id'), index=True, nullable=False)
+    paciente_id = Column(Integer, ForeignKey("pacientes.paciente_id"), index=True, nullable=False)
     fecha_analisis = Column(TIMESTAMP, default=datetime.utcnow, nullable=False)
     indice_riesgo = Column(DECIMAL(5, 4), nullable=False)
-    clasificacion = Column(String(50), nullable=False) 
+    clasificacion = Column(String(50), nullable=False)
 
-# 3. Función de Utilidad para la Base de Datos
+    paciente = relationship("Patient", back_populates="resultados_fusion")
+
+
+# =========================
+#   UTILIDADES DE BD
+# =========================
+
+def init_db():
+    """Crea las tablas en la BD si no existen."""
+    Base.metadata.create_all(bind=engine)
+
+
 def get_db():
+    """Dependencia típica de FastAPI para obtener sesión."""
     db = SessionLocal()
     try:
         yield db

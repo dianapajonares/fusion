@@ -1,16 +1,47 @@
-from pydantic import BaseModel
-from datetime import date, datetime
+from datetime import datetime
+from pydantic import BaseModel, EmailStr
 
-# Esquema para la creación de un nuevo Paciente (Input)
-class PacienteCreate(BaseModel):
+class PacienteBase(BaseModel):
     nombre_completo: str
-    fecha_nacimiento: date
+    fecha_nacimiento: datetime
     historia_clinica_num: str
 
-# Esquema para la respuesta después de crear un Paciente (Output)
-class Paciente(PacienteCreate):
+class PacienteCreate(PacienteBase):
+    pass
+
+class Paciente(PacienteBase):
     paciente_id: int
-    fecha_registro: datetime # Debe coincidir con el tipo TIMESTAMP de la DB
-    
+    fecha_registro: datetime
+
     class Config:
         from_attributes = True
+
+#Médicos
+class MedicoBase(BaseModel):
+    nombre: str
+    username: str
+    email: EmailStr
+
+class MedicoRegister(MedicoBase):
+    password:str
+class MedicoCreate(MedicoBase):
+    password: str   # llega en texto plano en el request
+
+class MedicoLogin(BaseModel):   # 👈 ESTE FALTABA
+    username: str
+    password: str
+class MedicoOut(MedicoBase):
+    medico_id: int
+
+    class Config:
+        from_attributes = True
+        
+#Login
+class LoginData(BaseModel):
+    username: str
+    password: str
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
