@@ -1,79 +1,139 @@
-//import { login as loginService } from "../services/authService";
 import React, { useState } from "react";
 import "../App.css";
-//import { useAuth } from "../services/authService";
 import { useNavigate } from "react-router-dom";
-import "../layout/Login.css"
+import "../layout/Login.css";
 
 function Login() {
   const [correo, setCorreo] = useState("");
   const [contraseña, setContraseña] = useState("");
-  //const [error, setError] = useState("");
-  //const [mensaje, setMensaje] = useState("");
-
-  //const { login } = useAuth();
+  const [error, setError] = useState("");
+  const [inputError, setInputError] = useState(false);
   const navigate = useNavigate();
-  const handleLogin = (e) => { // La declaramos sin 'async' ya que la lógica es simple
-    e.preventDefault();
-    console.log("Formulario de login activo (Solo Diseño)");
-  };
-  /*const handleLogin = async (e) => {
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-    setMensaje("");
+    setInputError(false);
 
     try {
-      const data = await loginService(correo, contraseña);
+      const response = await fetch("http://127.0.0.1:8000/api/v1/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: correo,
+          password: contraseña,
+        }),
+      });
 
-      if (data && data.tipo_usuario) {
-        login({
-          tipo_usuario: data.tipo_usuario,
-          usuario_id: data.usuario_id || data._id, // Ajusta según lo que regrese tu backend
-          nombre_usuario: data.nombre_usuario || data.nombre,
-          idrol_usuario: data.rol_usuario// Asegúrate de usar el campo correcto
-        });
+      if (response.status === 401) {
+        setError("Usuario o contraseña incorrectos");
+        setInputError(true);
+        return;
+      }
 
-        setMensaje(data.message || "Inicio de sesión exitoso");
-        console.log('Login correcto con:', data);
-        navigate("/");
+      if (!response.ok) {
+        setError(`Error en el servidor (${response.status})`);
+        setInputError(true);
+        return;
       }
-      else {
-        setError("Respuesta inesperada del servidor");
-      }
+
+      const data = await response.json();
+      localStorage.setItem("token", data.access_token);
+      navigate("/");
     } catch (err) {
       console.error("Error en login:", err);
-      setError(err.message || "Error al iniciar sesión");
+      setError("Error al iniciar sesión");
+      setInputError(true);
     }
-  };*/
+  };
+
+  const hasError = Boolean(error);
 
   return (
-<div className="login-page-container">
-      
-      {/* Contenedor central (la caja blanca) */}
-      <div className="login-container">
-        
-        <h2>Iniciar sesión</h2>
-        <form onSubmit={handleLogin} className="login-form">
+    <main
+      className="login-page-container"
+      role="main"
+      aria-labelledby="login-title"
+    >
+      <section className="login-container" aria-describedby={hasError ? "login-error" : undefined}>
+        <h1 id="login-title">Iniciar sesión</h1>
+
+        <form
+          onSubmit={handleLogin}
+          className="login-form"
+          noValidate
+          aria-describedby={hasError ? "login-error" : undefined}
+        >
+          {/* Campo usuario */}
+          <label htmlFor="login-usuario" className="sr-only">
+            Usuario
+          </label>
           <input
+            id="login-usuario"
+            name="username"
             type="email"
-            placeholder="Correo"
+            placeholder="Usuario"
             value={correo}
-            onChange={(e) => setCorreo(e.target.value)}
+            autoComplete="username"
+            autoFocus
+            tabIndex={1}
+            aria-required="true"
+            aria-invalid={inputError ? "true" : "false"}
+            aria-describedby={hasError ? "login-error" : undefined}
+            onChange={(e) => {
+              setCorreo(e.target.value);
+              setInputError(false);
+              setError("");
+            }}
+            className={inputError ? "input-error" : ""}
           />
+
+          <label htmlFor="login-password" className="sr-only">
+            Contraseña
+          </label>
           <input
+            id="login-password"
+            name="password"
             type="password"
             placeholder="Contraseña"
             value={contraseña}
-            onChange={(e) => setContraseña(e.target.value)}
+            autoComplete="current-password"
+            tabIndex={2}
+            aria-required="true"
+            aria-invalid={inputError ? "true" : "false"}
+            aria-describedby={hasError ? "login-error" : undefined}
+            onChange={(e) => {
+              setContraseña(e.target.value);
+              setInputError(false);
+              setError("");
+            }}
+            className={inputError ? "input-error" : ""}
           />
-          <button type="submit" className="button">Inicio de sesión</button>
+
+          <button
+            type="submit"
+            className="button"
+            tabIndex={3}
+            aria-label="Iniciar sesión en el sistema"
+          >
+            Iniciar sesión
+          </button>
         </form>
-        
-        {/* Los mensajes de error/éxito se pueden añadir aquí después de descomentar el estado */}
-      </div>
-      
-    </div>
-   
+
+        {hasError && (
+          <p
+            id="login-error"
+            className="error-mensage"
+            role="alert"
+            aria-live="assertive"
+          >
+            {error}
+          </p>
+        )}
+      </section>
+    </main>
   );
 }
 

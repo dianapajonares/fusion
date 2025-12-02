@@ -4,13 +4,13 @@ const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
 
 /**
  * Realiza la solicitud POST al endpoint de login de FastAPI.
- * @param {string} email
+ * @param {string} usuario
  * @param {string} password
  */
-export const login = async (email, password) => {
+export const login = async (usuario, password) => {
     // Usamos FormData porque la ruta de FastAPI espera correo y contraseña como Form-Data, no JSON
     const formData = new URLSearchParams();
-    formData.append('correo', email);
+    formData.append('usuario', usuario);
     formData.append('contraseña', password);
 
     try {

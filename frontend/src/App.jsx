@@ -2,7 +2,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login.jsx'; 
-import DashboardPage from './pages/Dashboard.jsx';
+import DashboardPage from './pages/Pacients.jsx';
 import MainLayout from './components/MainLayout.jsx'; 
 
 function App() {
