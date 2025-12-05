@@ -1,6 +1,7 @@
 // src/components/MainLayout.jsx
 import React from "react";
 import "../layout/DashboardLayout.css";
+import "../layout/TopBar.css"
 
 export function TopBarTabs({ activeSection, onSectionChange, userName }) {
   const sections = [

@@ -1,0 +1,295 @@
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    padding: 10px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  /* ======= GRID SUPERIOR (tarjeta grande + 2 pequeñas) ======= */
+  .dashboard-grid-top {
+    display: grid;
+    grid-template-columns: 3.5fr 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* ======= GRID INFERIOR (5 tarjetas pequeñas) ======= */
+  .dashboard-grid-bottom {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Tarjeta grande que agrupa dos subtarjetas */
+  .card-group {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    padding: 10px;
+    display: flex;
+    gap: 20px;              /* separación entre las dos tarjetas internas */
+  }
+  
+  /* Las subtarjetas individuales */
+  .subcard {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 10px 15px;
+    flex: 1;                /* ambas crecen igual */
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.05);
+  }
+  
+  .card-title {
+    margin-bottom: 5px;
+    gap: 8px;
+  }
+  
+  .card-subtitle {
+    margin-top: 0px;
+  }
+  
+  /* OJO: si es clase debería ser .tir-layout */
+  .tir-layout {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .tir-chart-wrapper {
+    width: 60px;
+  }
+  
+  /* Tooltip */
+  .tir-tooltip {
+    background: white;
+    border: 1px solid #e0e4ee;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+  }
+  
+  /* Leyenda */
+  .tir-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+  
+  .tir-legend-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .tir-legend-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .tir-legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-top: 2px;
+  }
+  
+  .tir-legend-textblock {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  
+  .tir-legend-label-main {
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .tir-legend-range {
+    font-size: 12px;
+    color: #6b7280;
+  }
+  
+  /* Línea punteada entre texto e indicadores */
+  .tir-legend-dotleader {
+    flex: 1;
+    border-bottom: 1px dotted #d1d5db;
+    align-self: center;
+    margin: 0 4px;
+  }
+  
+  /* Columna derecha: % y tiempo */
+  .tir-legend-right {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    min-width: 70px;
+  }
+  
+  .tir-legend-percent {
+    font-weight: 600;
+    color: #111827;
+  }
+  
+  .tir-legend-time {
+    font-size: 12px;
+    color: #6b7280;
+  }
+  
+  .metrics-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .metric-left {
+    flex: 1;
+  }
+  
+  .metric-title {
+    margin: 0;
+    font-weight: 500;
+    color: #111827;
+  }
+  
+  .metric-helper {
+    margin: 2px 0 0 0;
+    color: #777b81;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+  
+  .metric-value {
+    margin: 0;
+    font-weight: 700;
+    color: #0a3a75;
+    white-space: nowrap;
+  }
+  
+  /* ====== CABECERA PACIENTE ====== */
+  .dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* chip izquierda, botón derecha */
+    margin: 0.5rem 1.4rem;
+  }
+  
+  .patient-header-group {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Botón paciente
+     Ahora usa: btn + btn-secondary + btn-round
+     Aquí solo afinamos layout, NO colores ni padding fuerte */
+  .patient-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    /* dejamos que el padding, borde y fondo provengan de las clases .btn */
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.15); /* si quieres mantener sombra extra */
+  }
+  
+  .patient-chip-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 200;
+    font-size: 2.1rem;
+  }
+  
+  .patient-chip-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .patient-chip-name {
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+  
+  .patient-chip-period {
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+  
+  .chip-arrow {
+    margin-left: 8px;
+    font-size: 1.5rem;
+  }
+  
+  .patient-info-panel {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    z-index: 50;
+    margin-top: 8px;
+    padding: 20px 24px;
+    background: #ffffff;
+    border-radius: 24px;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.25);
+    min-width: 420px;
+  }
+  
+  .patient-info-row {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+  }
+  
+  .patient-info-row span:first-child {
+    margin-right: 6px;
+  }
+  
+  .patient-info-row strong {
+    font-weight: 700;
+  }
+  
+  /* Botón "Agregar información"
+     Ahora usa: btn + btn-outline + btn-round + btn-sm
+     Solo dejamos detalles pequeños si quieres */
+  .patient-add-btn {
+    /* si quieres separarlo un poco de la orilla, puedes usar margin-right */
+    /* margin-right: 4px; */
+  }
+  
+  /* KPIs */
+  .kpi-big {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+    font-weight: 600;
+  }
+  
+  /* ======= RESPONSIVE ======= */
+  @media (max-width: 1200px) {
+    .dashboard-grid-top {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  
+    .dashboard-grid-bottom {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .dashboard-grid-top,
+    .dashboard-grid-bottom {
+      grid-template-columns: 1fr;
+    }
+  }
+  

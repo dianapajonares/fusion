@@ -1,0 +1,108 @@
+/* =========================================================
+   SISTEMA GLOBAL DE BOTONES
+   Reutilizable en todo el proyecto
+   ========================================================= */
+
+/* ---------- ESTILO BASE ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+  
+    padding: 0.55rem 1.4rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: inherit;
+  
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+  
+    transition: 
+      background-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.07s ease;
+  }
+  
+  /* Forma redondeada tipo “pastilla” opcional */
+  .btn-round {
+    border-radius: 999px;
+  }
+  
+  /* ---------- VARIANTE: PRIMARIO ---------- */
+  /* Botón azul principal */
+  .btn-primary {
+    background: #00376F;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.15);
+  }
+  
+  .btn-primary:hover {
+    background: #014a93;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.18);
+  }
+  
+  .btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 8px rgba(15, 23, 42, 0.14);
+  }
+  
+  /* ---------- VARIANTE: SECUNDARIO ---------- */
+  /* Botón gris suave (útil para navegación y tabs) */
+  .btn-secondary {
+    background: #f2f2f2;
+    color: #1f2937;
+  }
+  
+  .btn-secondary:hover {
+    background: #e4e4e4;
+    color: #00376F;
+  }
+  
+  .btn-secondary:active {
+    transform: translateY(1px);
+  }
+  
+  /* ---------- VARIANTE: OUTLINE ---------- */
+  /* Bordeado azul */
+  .btn-outline {
+    background: #ffffff;
+    color: #00376F;
+    border: 1px solid #00376F;
+  }
+  
+  .btn-outline:hover {
+    background: #00376F;
+    color: #ffffff;
+  }
+  
+  .btn-outline:active {
+    transform: translateY(1px);
+  }
+  
+  /* ---------- TAMAÑOS ---------- */
+  .btn-sm {
+    padding: 0.35rem 1rem;
+    font-size: 0.8rem;
+  }
+  
+  .btn-md {
+    padding: 0.55rem 1.4rem;
+    font-size: 0.9rem;
+  }
+  
+  .btn-lg {
+    padding: 0.75rem 1.8rem;
+    font-size: 1rem;
+  }
+  
+  /* ---------- ESTADO DESHABILITADO ---------- */
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+  

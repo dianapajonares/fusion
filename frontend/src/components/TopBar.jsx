@@ -1,79 +1,77 @@
+// src/components/TopBarTabs.jsx
 import React, { useState } from "react";
-import "../../layout/DashboardLayout.css";
+import { useNavigate } from "react-router-dom";
+import "../layout/TopBar.css";
 
-const SECTIONS = [
-  { id: "inicio", label: "Inicio" },
-  { id: "pacientes", label: "Pacientes" },
-  { id: "fusion", label: "Fusión D1" },
+const TABS = [
+  { id: "home", label: "Inicio", path: "/" },
+  { id: "patients", label: "Pacientes", path: "/pacientes" },
 ];
 
-export function TopBarTabs({ activeSection = "pacientes", onSectionChange, userName = "Doctor Hernandez" }) {
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+export function TopBarTabs() {
+  const [activeTab, setActiveTab] = useState("home");
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const navigate = useNavigate();
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab.id);
+    navigate(tab.path);
+  };
+  
+  const handleLogout = async () => {
+    try {
+      await fetch("http://127.0.0.1:8000/api/v1/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      localStorage.removeItem("access_token");
+  
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Error en logout:", error);
+    }
+  };
+  
 
   return (
     <header className="topbar">
-      {/* Lado izquierdo: logo + nombre app */}
+      {/* Izquierda: logo + tabs */}
       <div className="topbar-left">
-        <div className="topbar-logo">
-          <span className="topbar-logo-mark">β</span>
-          <span className="topbar-logo-text">HbA1c</span>
-        </div>
+        <div className="topbar-logo">HbHbA1c</div>
+
+        <nav className="topbar-nav">
+          {TABS.map((tab) => (
+            <button
+              key={tab.id}
+              className={`topbar-btn ${activeTab === tab.id ? "active" : ""}`}
+              onClick={() => handleTabClick(tab)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
       </div>
 
-      {/* Centro: pestañas */}
-      <nav
-        className="topbar-tabs"
-        role="tablist"
-        aria-label="Navegación principal"
-      >
-        {SECTIONS.map((s) => (
-          <button
-            key={s.id}
-            role="tab"
-            type="button"
-            className={
-              s.id === activeSection
-                ? "topbar-tab topbar-tab--active"
-                : "topbar-tab"
-            }
-            aria-selected={s.id === activeSection}
-            onClick={() => onSectionChange && onSectionChange(s.id)}
-          >
-            {s.label}
-          </button>
-        ))}
-      </nav>
-
-      {/* Derecha: usuario */}
+      {/* Derecha: menú usuario */}
       <div className="topbar-right">
         <div className="user-menu">
           <button
-            type="button"
-            className="user-trigger"
-            aria-haspopup="menu"
-            aria-expanded={userMenuOpen}
-            onClick={() => setUserMenuOpen((v) => !v)}
+            className="topbar-btn user-btn"
+            onClick={() => setShowUserMenu((prev) => !prev)}
           >
-            <span className="user-name">{userName}</span>
-            <span className="user-chevron">▾</span>
+            Doctor Hernández ▾
           </button>
 
-          {userMenuOpen && (
-            <ul className="user-dropdown" role="menu">
-              <li role="menuitem">
-                <button type="button">Perfil</button>
-              </li>
-              <li role="menuitem">
-                <button type="button">Ajustes</button>
-              </li>
-              <li role="menuitem">
-                <button type="button">Cerrar sesión</button>
-              </li>
-            </ul>
+          {showUserMenu && (
+            <div className="user-dropdown">
+              <button>Perfil</button>
+              <button>Configuración</button>
+              <button onClick={handleLogout} >Cerrar sesión </button>
+            </div>
           )}
         </div>
       </div>
     </header>
   );
 }
-

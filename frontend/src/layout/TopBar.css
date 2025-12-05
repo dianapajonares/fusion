@@ -1,0 +1,92 @@
+/* Contenedor principal de la barra */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 2rem;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  /* Izquierda: logo + tabs */
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  /* Logo HbHbA1c */
+  .topbar-logo {
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  /* Contenedor de los botones */
+  .topbar-nav {
+    display: flex;
+    gap: 0.75rem;
+  }
+  
+  /* Botones tipo “pastilla” */
+  .topbar-btn {
+    border: none;  
+    padding: .6rem 3rem;    
+    font-size: 0.9rem;
+    text-size-adjust: auto;
+    border-radius: 20px;
+    background: #f2f2f2;
+    cursor: pointer;
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  }
+  
+  .topbar-btn:hover {
+    background: #00376f;
+    color: #ffffff;
+  }
+  
+  /* Tab activa */
+  .topbar-btn.active {
+    background: #00376f; ;
+    color: #ffffff;
+  }
+  
+  /* Lado derecho */
+  .topbar-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Menú usuario */
+  .user-menu {
+    position: relative;
+  }
+  
+  /* Dropdown */
+  .user-dropdown {
+    position: absolute;
+    right: 0;
+    top: 115%;
+    background: #ffffff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+    padding: 0.4rem 0;
+    min-width: 180px;
+    z-index: 50;
+  }
+  
+  .user-dropdown button {
+    width: 100%;
+    border: none;
+    background: transparent;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  
+  .user-dropdown button:hover {
+    background: #00376f;
+    color: #ffffff;
+    border-radius: 6rem;
+  }
+  

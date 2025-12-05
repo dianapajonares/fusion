@@ -21,11 +21,14 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",  // 👈 PARA RECIBIR LA COOKIE
         body: JSON.stringify({
           username: correo,
           password: contraseña,
         }),
       });
+
+      console.log("login status:", response.status);
 
       if (response.status === 401) {
         setError("Usuario o contraseña incorrectos");
@@ -39,9 +42,11 @@ function Login() {
         return;
       }
 
-      const data = await response.json();
-      localStorage.setItem("token", data.access_token);
-      navigate("/");
+      // Consumimos el body (aunque no lo usemos)
+      await response.json();
+      console.log("login ok, navegando a /pacientes");
+
+      navigate("/pacientes");
     } catch (err) {
       console.error("Error en login:", err);
       setError("Error al iniciar sesión");
@@ -57,7 +62,10 @@ function Login() {
       role="main"
       aria-labelledby="login-title"
     >
-      <section className="login-container" aria-describedby={hasError ? "login-error" : undefined}>
+      <section
+        className="login-container"
+        aria-describedby={hasError ? "login-error" : undefined}
+      >
         <h1 id="login-title">Iniciar sesión</h1>
 
         <form
@@ -66,7 +74,6 @@ function Login() {
           noValidate
           aria-describedby={hasError ? "login-error" : undefined}
         >
-          {/* Campo usuario */}
           <label htmlFor="login-usuario" className="sr-only">
             Usuario
           </label>

@@ -1,27 +1,24 @@
 // src/App.jsx
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Login from './pages/Login.jsx'; 
-import DashboardPage from './pages/Pacients.jsx';
-import MainLayout from './components/MainLayout.jsx'; 
+import { Routes, Route, Navigate } from "react-router-dom";
+import Login from "./pages/Login";
+import PatientsList from "./pages/Pacients";
+import PatientDashboard from "./pages/PatientDashboard";
+
 
 function App() {
   return (
-    <div className="App">
-      <Routes>
-        
-        {/* 🚨 RUTA DE LOGIN: Accesible en http://localhost:3000/login */}
-        <Route path="/login" element={<Login />} />
-        
-        {/* 🟢 RUTA PRINCIPAL (DEFAULT): Accesible en http://localhost:3000/ */}
-        {/* El Layout envuelve el contenido del Dashboard */}
-        <Route path="/" element={<MainLayout> <DashboardPage /> </MainLayout>} />
-        
-        {/* Aquí puedes añadir más rutas que usen el MainLayout, ej: */}
-        {/* <Route path="/pacientes" element={<MainLayout> <PacientesPage /> </MainLayout>} /> */}
-        
-      </Routes>
-    </div>
+    <Routes>
+      {/* Pantalla de inicio: LOGIN */}
+      <Route path="/" element={<Login />} />
+
+      {/* Lista de pacientes */}
+      <Route path="/pacientes" element={<PatientsList />} />
+      <Route path="/pacientes/:pacienteId" element={<PatientDashboard />} />
+
+
+      {/* Cualquier otra ruta → al login */}
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
 
