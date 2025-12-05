@@ -4,7 +4,7 @@ db = SessionLocal()
 
 print("Pacientes:")
 for p in db.query(Patient).all():
-    print(p.paciente_id, p.nombre_completo, p.historia_clinica_num)
+    print(p.paciente_id, p.apellido_paterno, p.apellido_materno,p.nombre, p.historia_clinica_num)
 
 print("\nAlgunas lecturas de glucosa:")
 for g in db.query(GlucoseReading).limit(10):

@@ -1,6 +1,16 @@
 from datetime import datetime
 
-from sqlalchemy import (create_engine,Column, Integer,String,Float,DECIMAL,TIMESTAMP,ForeignKey,DateTime,)
+from sqlalchemy import (
+    create_engine,
+    Column,
+    Integer,
+    String,
+    Float,
+    DECIMAL,
+    TIMESTAMP,
+    ForeignKey,
+    DateTime,
+)
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
 
 from config import SQLALCHEMY_DATABASE_URL
@@ -13,11 +23,6 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 
 # Session
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-
-# =========================
-#   MODELOS DE LA PLATAFORMA
-# =========================
 
 class GlucoseReading(Base):
     __tablename__ = "glucose_readings"
@@ -67,18 +72,30 @@ class Medico(Base):
     email = Column(String(100), unique=True, nullable=False)
     password_hash = Column(String(255), nullable=False)
 
+
 class Patient(Base):
     __tablename__ = "pacientes"
 
     paciente_id = Column(Integer, primary_key=True, index=True)
-    nombre_completo = Column(String(150), nullable=False)
-    fecha_nacimiento = Column(TIMESTAMP, nullable=False)
-    historia_clinica_num = Column(String(50), unique=True, nullable=False)
+    nombre = Column(String(100), nullable=False)
+    apellido_paterno = Column(String(100), nullable=False)
+    apellido_materno = Column(String(100), nullable=True)
+    fecha_nacimiento = Column(DateTime, nullable=False)
+    sexo = Column(String(10), nullable=True)                 
+    anio_diagnostico = Column(Integer, nullable=True)        
+
+    enfermedades_cronicas = Column(String, nullable=True)   
+    tipo_insulina = Column(String(100), nullable=True)      
+    hba1c = Column(Float, nullable=True)                     
+    duracion_periodo = Column(Integer, nullable=True)      
+
+    historia_clinica_num = Column(String, unique=True, nullable=False)
     fecha_registro = Column(
-        TIMESTAMP,
+        DateTime,
         default=datetime.utcnow,
         nullable=False,
     )
+
 
     # Relaciones
     glucose = relationship("GlucoseReading", back_populates="patient")
@@ -114,10 +131,8 @@ class ResultadoFusion(Base):
 
     paciente = relationship("Patient", back_populates="resultados_fusion")
 
-
-# =========================
 #   UTILIDADES DE BD
-# =========================
+
 
 def init_db():
     """Crea las tablas en la BD si no existen."""

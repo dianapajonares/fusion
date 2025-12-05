@@ -1,18 +1,27 @@
-# === BACK =====
-# Ignorar carpetas de entornos virtuales y compilación de Python
+# === BACKEND ===
 __pycache__/
 *.pyc
 venv/
 .pytest_cache/
 
-# Dependencias del sistema operativo (macOS)
+# Entorno virtual de backend
+backend/.venv/
+backend/__pycache__/
+backend/*.pyc
+
+# Por si acaso se crea en la raíz:
+.venv/
+
+# Variables de entorno
+.env
+
+# macOS
 .DS_Store
 
-# Archivos de la base de datos y credenciales (CRUCIALES)
-.env
+# Volúmenes/local DB
 postgres_data/
 
-# === FRONTEND (Vite / React) ===
+# === FRONTEND (React / Vite) ===
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/
@@ -21,7 +30,6 @@ npm-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
-# === EDITOR ===
+# === EDITORES ===
 .vscode/
 .idea/

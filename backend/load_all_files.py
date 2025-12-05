@@ -13,10 +13,9 @@ from models import (
     DietaryIntake,
 )
 
-# Carpeta donde están los archivos XLS/XLSX
 DATA_DIR = Path(__file__).resolve().parent / "data"
 
-# Columnas EXACTAS del dataset Shanghai
+# Columnas dataset Shanghai
 COL_DATE = "Date"
 COL_CGM = "CGM (mg / dl)"
 COL_CBG = "CBG (mg / dl)"
@@ -37,6 +36,8 @@ def parse_ts(value):
         return pd.to_datetime(value)
     except Exception:
         return None
+
+
 def parse_dose(value):
     """Extrae el número de una cadena como 'insulin degludec, 16 IU' -> 16.0"""
     if pd.isna(value):
@@ -53,6 +54,7 @@ def parse_dose(value):
 def get_or_create_patient(db: Session, external_id: str) -> Patient:
     """
     Usa historia_clinica_num == external_id como ID del paciente dataset.
+    Como el dataset no trae nombre real, usamos un nombre genérico.
     """
     patient = (
         db.query(Patient)
@@ -61,7 +63,9 @@ def get_or_create_patient(db: Session, external_id: str) -> Patient:
     )
     if not patient:
         patient = Patient(
-            nombre_completo=f"Paciente {external_id}",
+            nombre=f"Paciente {external_id}",
+            apellido_paterno="Shanghai",
+            apellido_materno=None,
             fecha_nacimiento=datetime(2000, 1, 1),
             historia_clinica_num=external_id,
         )
@@ -74,7 +78,8 @@ def get_or_create_patient(db: Session, external_id: str) -> Patient:
 def load_file(path: Path, db: Session):
     print(f"📂 Cargando archivo: {path.name}")
 
-    external_id = path.stem.split("_")[0]  # ejemplo: 1006 del archivo 1006_0_20210114.xlsx
+    # ejemplo: 1006 del archivo 1006_0_20210114.xlsx
+    external_id = path.stem.split("_")[0]
     patient = get_or_create_patient(db, external_id)
 
     # Leer el archivo
@@ -124,7 +129,6 @@ def load_file(path: Path, db: Session):
             db.add(diet)
 
         # ----------------- INSULINA -------------------
-               # ----------------- INSULINA -------------------
         has_insulin = any(
             col in df.columns and not pd.isna(row[col])
             for col in [COL_SC_INSULIN, COL_BOLUS, COL_BASAL, COL_IV]
@@ -141,12 +145,12 @@ def load_file(path: Path, db: Session):
             )
             db.add(insulin)
 
-
     db.commit()
-    print(f"✅ Archivo {path.name} cargado.\n")
+    print(f"Archivo {path.name} cargado.\n")
 
 
 def main():
+    # Asegura que las tablas existen
     init_db()
     db = SessionLocal()
 
@@ -161,12 +165,12 @@ def main():
     for fname in files:
         path = DATA_DIR / fname
         if not path.exists():
-            print(f"⚠ No se encontró {path}, lo salto.")
+            print(f"No se encontró {path}, lo salto.")
             continue
         load_file(path, db)
 
     db.close()
-    print("🎉 Todos los archivos procesados.")
+    print(" Todos los archivos fueron procesado")
 
 
 if __name__ == "__main__":

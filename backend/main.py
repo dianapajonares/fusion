@@ -1,31 +1,27 @@
 # backend/main.py
 from datetime import datetime, timedelta
 from typing import List, Optional
-
-from fastapi import FastAPI, Depends, HTTPException, Security
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
-
-import models, schemas
 from models import get_db, Patient, GlucoseReading, InsulinDose, DietaryIntake
 from routers import fusion, auth
 from routers.auth import get_current_medico
+import models, schemas
 
 
 app = FastAPI(title="Sistema Clínico - ShanghaiT1DM")
 
-# =========================
 #   Routers
-# =========================
 app.include_router(auth.router)
 app.include_router(fusion.router)
 
-# =========================
 #   CORS
-# =========================
 origins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    # aquí luego puedes agregar el front de producción
 ]
 
 app.add_middleware(
@@ -36,66 +32,66 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-# =========================
 #   ROOT
-# =========================
 @app.get("/")
 def read_root():
     return {"status": "ok", "message": "Backend y DB conectados y listos."}
 
-
-# =========================
 #   PACIENTES (CREAR Y LISTAR) - PROTEGIDOS
-# =========================
-
 @app.post("/api/v1/pacientes/", response_model=schemas.Paciente)
 def create_paciente(
     paciente: schemas.PacienteCreate,
     db: Session = Depends(get_db),
-    # 👇 obliga a que el request traiga un Bearer token válido
-    current_medico: models.Medico = Security(get_current_medico),
+    current_medico: models.Medico = Depends(get_current_medico),
 ):
-    # Verificar duplicados
-    existe_paciente = (
-        db.query(models.Patient)
-        .filter(models.Patient.historia_clinica_num == paciente.historia_clinica_num)
-        .first()
-    )
-
-    if existe_paciente:
-        raise HTTPException(
-            status_code=400,
-            detail="El número de historia clínica ya existe.",
-        )
-
-    db_paciente = models.Patient(
-        nombre_completo=paciente.nombre_completo,
+    db_paciente = Patient(
+        nombre=paciente.nombre,
+        apellido_paterno=paciente.apellido_paterno,
+        apellido_materno=paciente.apellido_materno,
         fecha_nacimiento=paciente.fecha_nacimiento,
+        sexo=paciente.sexo,
+        anio_diagnostico=paciente.anio_diagnostico,
+        enfermedades_cronicas=paciente.enfermedades_cronicas,
+        tipo_insulina=paciente.tipo_insulina,
+        hba1c=paciente.hba1c,
+        duracion_periodo=paciente.duracion_periodo,
         historia_clinica_num=paciente.historia_clinica_num,
     )
-
     db.add(db_paciente)
     db.commit()
     db.refresh(db_paciente)
-
     return db_paciente
-
-
-@app.get("/api/v1/pacientes/", response_model=List[schemas.Paciente])
+@app.get("/api/v1/pacientes/",response_model=List[schemas.Paciente])
 def list_pacientes(
     db: Session = Depends(get_db),
-    current_medico: models.Medico = Security(get_current_medico),
+    current_medico:models.Medico=Depends(get_current_medico),
 ):
-    pacientes = db.query(models.Patient).all()
+    pacientes=db.query(Patient).all()
     return pacientes
+
+@app.get("/api/v1/pacientes/{paciente_id}", response_model=schemas.Paciente)
+def get_paciente(
+    paciente_id: int,
+    db: Session = Depends(get_db),
+    current_medico: models.Medico = Depends(get_current_medico),
+):
+    # 1) Intentar en la BD
+    paciente = (
+        db.query(Patient)
+        .filter(Patient.paciente_id == paciente_id)
+        .first()
+    )
+
+    if paciente:
+        return paciente 
+    raise HTTPException(status_code=404, detail="Paciente no encontrado")
 
 
 # =========================
 #   ESQUEMAS AUXILIARES PARA FUSIÓN
 # =========================
 
-class GlucosePointOut(schemas.BaseModel):
+class GlucosePointOut(BaseModel):
     timestamp: datetime
     value_mgdl: Optional[float] = None
     cbg_mgdl: Optional[float] = None
@@ -105,7 +101,7 @@ class GlucosePointOut(schemas.BaseModel):
         from_attributes = True
 
 
-class FusionSummaryOut(schemas.BaseModel):
+class FusionSummaryOut(BaseModel):
     paciente_id: int
     range_start: datetime
     range_end: datetime
@@ -114,10 +110,7 @@ class FusionSummaryOut(schemas.BaseModel):
     total_insulin: float
     diet_events: int
 
-
-# =========================
 #   ENDPOINT GLUCOSA 14 DÍAS - PROTEGIDO
-# =========================
 
 @app.get(
     "/api/v1/pacientes/{paciente_id}/glucosa",
@@ -127,7 +120,7 @@ def get_glucose_timeseries(
     paciente_id: int,
     days: int = 14,
     db: Session = Depends(get_db),
-    current_medico: models.Medico = Security(get_current_medico),
+    current_medico: models.Medico = Depends(get_current_medico),
 ):
     # Verificar paciente
     paciente = (
