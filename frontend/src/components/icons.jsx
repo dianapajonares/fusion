@@ -76,3 +76,4 @@ export function StressIcon(props) {
 export function ClinicalNotesIcon(props) {
   return <Icon name="clinical_notes" {...props} />;
 }
+

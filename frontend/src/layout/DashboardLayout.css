@@ -31,9 +31,6 @@
     margin-bottom: 16px;
   }
   
-  /* ================================
-     TABLA + SCROLL EN MÓVIL
-  ================================ */
   .patients-table-wrapper {
     width: 100%;
     overflow-x: auto;

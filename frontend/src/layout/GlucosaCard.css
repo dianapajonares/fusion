@@ -1,0 +1,66 @@
+.metrics-list { 
+    display: flex;
+    flex-direction: column;
+    gap: .60rem;
+  }
+  
+  .metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  
+  .metric-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-right: .6rem;
+  }
+  
+  .metric-title {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
+    color: var(--color-text-dark);
+  }
+  
+  .metric-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .metric-right {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-align: right;
+    min-width: 40px;
+  }
+  
+  .metric-value{
+    font-weight: 600;
+  }
+  .kpi-big {
+    font-size: 2rem;
+    margin-top: 0.4rem;
+    font-weight: 600;
+    margin-bottom: .4rem;
+    color: var(--color-secondary);
+  }
+  .kpi-medium {
+    font-size: 1.5rem;
+    margin-top: 0.4rem;
+    font-weight: 600;
+    margin-bottom: .4rem;
+    color: var(--color-secondary);
+  }
+  .metric-helper{
+    margin-top: .3rem;
+  }

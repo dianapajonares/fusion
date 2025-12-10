@@ -2,10 +2,7 @@
 
 import React from "react";
 
-/**
- * Componente base para cualquier Material Symbol.
- * variant: "outlined" | "rounded" | "sharp"
- */
+
 export function Icon({ name, variant = "outlined", className = "", style = {} }) {
   const baseClass =
     variant === "rounded"
@@ -21,8 +18,10 @@ export function Icon({ name, variant = "outlined", className = "", style = {} })
   );
 }
 
-/* ============ ICONOS SEMÁNTICOS PARA TU DASHBOARD ============ */
+export function UserIcon(props){
+  return <Icon name="person" {...props} />;
 
+}
 // Paciente / cabecera
 export function PatientIcon(props) {
   return <Icon name="patient_list" {...props} />;

@@ -1,7 +1,8 @@
 // src/components/TiempoEnRangosCard.jsx
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis } from "recharts";
-
+import "../layout/TiempoEnRangosCard.css"
+import"../layout/Tarjetas.css"
 const formatMinutes = (min) => {
   if (!min || min <= 0) return "0 min";
   const h = Math.floor(min / 60);

@@ -1,15 +1,10 @@
-/* ========================================= */
-/* --- ESTILOS GLOBAL DE PÁGINA (Login) --- */
-/* ========================================= */
 
-/* Aplicamos las reglas de centrado TOTAL al cuerpo de la vista del Login.
-   Esto solo afectará a esta página gracias al diseño de React. */
+
    .login-page-container { 
-    /* El degradado de fondo que deseas */
     background: linear-gradient(to right, #e0f7fa, #f1f8e9);
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center; /* Centra verticalmente */
+    justify-content: center;
+    align-items: center;
     min-height: 100vh;
     width: 100%;
 }
@@ -23,10 +18,6 @@
     max-width: 400px; 
     text-align: center;
 }
-
-/* ========================================= */
-/* --- ESTILOS DE ELEMENTOS --- */
-/* ========================================= */
 
 .login-container h2 {
     font-size: 2rem;
@@ -54,7 +45,6 @@ input {
     font-size: 1rem;
 }
 
-/* --- ESTILOS DEL BOTÓN --- */
 .login-form button {
     background-color: #003366;
     color: white;
@@ -64,7 +54,7 @@ input {
     font-size: 1rem;
     cursor: pointer;
     transition: background 0.3s ease;
-    margin-top: 0.5rem; /* Asegura espacio si los inputs están pegados */
+    margin-top: 0.5rem; 
 }
 
 .login-form button:hover {
@@ -82,14 +72,9 @@ input {
   }
   
 
-/* ========================================= */
-/* --- RESPONSIVE (Móviles) --- */
-/* ========================================= */
-
 @media (max-width: 900px) {
     .login-wrapper {
         flex-direction: column;
-        /* Al apilar, el centrado vertical ya está asegurado por align-items: center */
     }
 
     .left-panel {

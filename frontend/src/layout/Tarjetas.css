@@ -1,0 +1,97 @@
+/*Tarjetas*/
+.card {
+    background: var(--color-background-light);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-card);
+    padding: 10px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  
+  .card-group {
+    padding: 10px;
+    flex-direction: row;
+    gap: var(--spacing-m);
+  }
+  
+  .card-sub {
+    padding: 10px 15px;
+    box-shadow: var(--shadow-card-soft);
+  }
+
+  .card-title{
+    margin-bottom: .75rem;
+    margin-top: .3rem;
+  }
+  
+  .subcard {
+    flex: 1;
+    background: var(--color-background-ligh);
+    border-radius: 16px;
+    padding: 1px 4px;
+   
+  }
+
+  .card-group {
+    display: flex;
+    align-items: flex-start;  
+    gap: 20px;
+    padding-right: 2rem;
+  }
+
+ 
+  /*Ajustar titulos misma altura*/
+  .group-item {
+    flex: 1;
+    padding-top: 2px;        
+  }
+  
+ 
+  .subcard-inner {
+    padding: 0;
+  }
+  
+  /* divisor vertical */
+  .vertical-divider {
+    width: 3px;
+    background-color: rgba(0, 0, 0, 0.06);
+    height: 65%;          
+    align-self: center; 
+    border-radius: 8px;  
+    flex-shrink: 0;
+    margin: 0 5px;    
+  }
+  
+/*Minis*/
+.female-cards-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .card-stack .mini-card {
+    flex: 1; /* cada una crece para rellenar */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .mini-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+  }
+  
+  .mini-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d4ed8;
+  }
+  
+  .mini-card-subtitle {
+    margin-top: 2px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+  

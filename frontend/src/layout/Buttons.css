@@ -1,7 +1,3 @@
-/* =========================================================
-   SISTEMA GLOBAL DE BOTONES
-   Reutilizable en todo el proyecto
-   ========================================================= */
 
 /* ---------- ESTILO BASE ---------- */
 .btn {
@@ -50,7 +46,6 @@
   }
   
   /* ---------- VARIANTE: SECUNDARIO ---------- */
-  /* Botón gris suave (útil para navegación y tabs) */
   .btn-secondary {
     background: #f2f2f2;
     color: #1f2937;

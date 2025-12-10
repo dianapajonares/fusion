@@ -1,0 +1,116 @@
+
+   .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(121, 115, 115, 0.55);
+    backdrop-filter: blur(5px); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+
+  .modal-card {
+    background: #ffffff;
+    width: 430px;
+    max-width: 92vw;
+    padding: 20px 24px;
+    border-radius: 18px;
+    box-shadow: 0px 20px 40px rgba(15, 23, 42, 0.25);
+    animation: modalFadeIn 0.18s ease-out;
+  }
+  
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  
+  .modal-close-btn {
+    border: none;
+    background: transparent;
+    font-size: 18px;
+    cursor: pointer;
+    color: #475569;
+    transition: 0.15s ease;
+  }
+  
+  
+  
+
+  .modal-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+  
+  .modal-input,
+  .modal-textarea {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 8px 10px;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.15s;
+  }
+  
+  .modal-input:focus,
+  .modal-textarea:focus {
+    border-color: #0f62fe;
+  }
+
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  
+  .btn-primary {
+    background: #0544c8;
+    color: white;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .btn-primary:hover {
+    background: #0f62fe;
+  }
+  
+  .btn-secondary {
+    background: #e5e7eb;
+    color: #111827;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .modal-error {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+  

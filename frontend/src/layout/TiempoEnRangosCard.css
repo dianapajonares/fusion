@@ -1,0 +1,82 @@
+.tir-layout {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .tir-chart-wrapper {
+    width: 60px;
+  }
+  
+  .tir-tooltip {
+    background: #ffffff;
+    border: 1px solid var(--color-border-subtle);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+  }
+  
+  .tir-legend {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    width: 100%;
+  }
+  
+  .tir-legend-row,
+  .tir-legend-main {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .tir-legend-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    margin-top: 2px;
+  }
+  
+  .tir-legend-textblock {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+  }
+  
+  .tir-legend-label-main {
+    font-weight: 600;
+    color: var(--color-text-dark);
+  }
+  
+  .tir-legend-range {
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+  
+  .tir-legend-dotleader {
+    flex: 1;
+    border-bottom: 1px dotted #d1d5db;
+    align-self: center;
+    margin: 0 4px;
+  }
+  
+  .tir-legend-right {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    min-width: 70px;
+  }
+  
+  .tir-legend-percent {
+    font-weight: 600;
+    color: var(--color-text-dark);
+  }
+  
+  .tir-legend-time {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+  .tir-card {
+    flex: 1;
+  }
+  
