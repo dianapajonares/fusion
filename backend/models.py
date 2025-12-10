@@ -11,8 +11,8 @@ from sqlalchemy import (
     ForeignKey,
     DateTime,
 )
+from sqlalchemy.dialects.postgresql import JSONB 
 from sqlalchemy.orm import relationship, declarative_base, sessionmaker
-
 from config import SQLALCHEMY_DATABASE_URL
 
 # Base de SQLAlchemy
@@ -50,6 +50,21 @@ class InsulinDose(Base):
 
     patient = relationship("Patient", back_populates="insulin")
 
+class ManualEvent(Base):
+    __tablename__ = "manual_events"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    patient_id = Column(Integer, ForeignKey("pacientes.paciente_id"), nullable=False)
+    patient = relationship("Patient", back_populates="manual_events")
+
+    event_type = Column(String, nullable=False)
+    subtype = Column(String, nullable=True)
+    timestamp = Column(DateTime, nullable=False, default=datetime.utcnow)
+    value = Column(Float, nullable=True)
+    unit = Column(String, nullable=True)  
+    note = Column(String, nullable=True)  
+    extra = Column(JSONB, nullable=True)
 
 class DietaryIntake(Base):
     __tablename__ = "dietary_intake"
@@ -57,8 +72,8 @@ class DietaryIntake(Base):
     id = Column(Integer, primary_key=True, index=True)
     patient_id = Column(Integer, ForeignKey("pacientes.paciente_id"), index=True)
     timestamp = Column(DateTime, index=True)
-    dietary = Column(String, nullable=True)      # "Dietary intake"
-    dietary_cn = Column(String, nullable=True)   # "饮食"
+    dietary = Column(String, nullable=True)      
+    dietary_cn = Column(String, nullable=True)   
 
     patient = relationship("Patient", back_populates="dietary")
 
@@ -95,9 +110,12 @@ class Patient(Base):
         default=datetime.utcnow,
         nullable=False,
     )
+    manual_events = relationship(
+        "ManualEvent",
+        back_populates="patient",
+        cascade="all, delete-orphan"
+    )
 
-
-    # Relaciones
     glucose = relationship("GlucoseReading", back_populates="patient")
     insulin = relationship("InsulinDose", back_populates="patient")
     dietary = relationship("DietaryIntake", back_populates="patient")
@@ -130,9 +148,6 @@ class ResultadoFusion(Base):
     clasificacion = Column(String(50), nullable=False)
 
     paciente = relationship("Patient", back_populates="resultados_fusion")
-
-#   UTILIDADES DE BD
-
 
 def init_db():
     """Crea las tablas en la BD si no existen."""

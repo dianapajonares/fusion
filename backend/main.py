@@ -6,9 +6,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from models import get_db, Patient, GlucoseReading, InsulinDose, DietaryIntake
-from routers import fusion, auth
+from routers import fusion, auth, manual
 from routers.auth import get_current_medico
 import models, schemas
+
+
+
+
 
 
 app = FastAPI(title="Sistema Clínico - ShanghaiT1DM")
@@ -16,12 +20,12 @@ app = FastAPI(title="Sistema Clínico - ShanghaiT1DM")
 #   Routers
 app.include_router(auth.router)
 app.include_router(fusion.router)
+app.include_router(manual.router)
 
 #   CORS
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    # aquí luego puedes agregar el front de producción
 ]
 
 app.add_middleware(
@@ -75,7 +79,6 @@ def get_paciente(
     db: Session = Depends(get_db),
     current_medico: models.Medico = Depends(get_current_medico),
 ):
-    # 1) Intentar en la BD
     paciente = (
         db.query(Patient)
         .filter(Patient.paciente_id == paciente_id)
@@ -86,10 +89,8 @@ def get_paciente(
         return paciente 
     raise HTTPException(status_code=404, detail="Paciente no encontrado")
 
-
-# =========================
 #   ESQUEMAS AUXILIARES PARA FUSIÓN
-# =========================
+
 
 class GlucosePointOut(BaseModel):
     timestamp: datetime
@@ -110,7 +111,7 @@ class FusionSummaryOut(BaseModel):
     total_insulin: float
     diet_events: int
 
-#   ENDPOINT GLUCOSA 14 DÍAS - PROTEGIDO
+#   ENDPOINT GLUCOSA 14 DÍAS
 
 @app.get(
     "/api/v1/pacientes/{paciente_id}/glucosa",
@@ -122,7 +123,6 @@ def get_glucose_timeseries(
     db: Session = Depends(get_db),
     current_medico: models.Medico = Depends(get_current_medico),
 ):
-    # Verificar paciente
     paciente = (
         db.query(Patient)
         .filter(Patient.paciente_id == paciente_id)
@@ -131,7 +131,6 @@ def get_glucose_timeseries(
     if not paciente:
         raise HTTPException(status_code=404, detail="Paciente no encontrado")
 
-    # Última lectura como ancla de la ventana
     last = (
         db.query(GlucoseReading)
         .filter(GlucoseReading.patient_id == paciente_id)
@@ -168,3 +167,5 @@ def get_glucose_timeseries(
         )
         for g in readings
     ]
+
+

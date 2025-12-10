@@ -18,20 +18,12 @@ router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 
-# =========================
-#   ESQUEMA LOGIN
-# =========================
 
 class LoginRequest(BaseModel):
     username: str
     password: str
 
-# =========================
-#   AUTENTICACIÓN BÁSICA
-# =========================
-
 def authenticate_medico(db: Session, username: str, password: str) -> Optional[Medico]:
-    """Usa tu lógica actual para validar usuario y contraseña."""
     medico = db.query(Medico).filter(Medico.username == username).first()
     if not medico:
         return None
@@ -39,24 +31,13 @@ def authenticate_medico(db: Session, username: str, password: str) -> Optional[M
         return None
     return medico
 
-
-# =========================
-#   LOGIN (COOKIE HTTPONLY)
-# =========================
-
 @router.post("/login")
 def login(
     login_data: LoginRequest,
     response: Response,
     db: Session = Depends(get_db),
 ):
-    """
-    Login:
-    - Verifica credenciales
-    - Crea JWT
-    - Guarda el JWT en una cookie HttpOnly
-    - (Opcional) devuelve también info en el body
-    """
+
     medico = authenticate_medico(db, login_data.username, login_data.password)
     if not medico:
         raise HTTPException(status_code=401, detail="Usuario o contraseña incorrectos")
@@ -67,13 +48,12 @@ def login(
         expires_delta=access_token_expires,
     )
 
-    # 👇 Guardamos el token en una cookie HttpOnly
     response.set_cookie(
         key="access_token",
         value=access_token,
-        httponly=True,     # JS no puede leer esta cookie
-        secure=False,      # En producción con HTTPS → True
-        samesite="lax",    # Protege un poco contra CSRF básico
+        httponly=True,    
+        secure=False,     
+        samesite="lax",   
         max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         path="/",
     )
@@ -84,10 +64,6 @@ def login(
         "expires_in": ACCESS_TOKEN_EXPIRE_MINUTES * 60,
     }
 
-
-# =========================
-#   DEPENDENCIA: MÉDICO ACTUAL
-# =========================
 
 def get_current_medico(
     access_token: Optional[str] = Cookie(default=None),
@@ -122,9 +98,6 @@ def get_current_medico(
 
     return medico
 
-# =========================
-#   QUIÉN SOY (PARA EL FRONT)
-# =========================
 @router.get("/me")
 def read_me(current_medico: Medico = Depends(get_current_medico)):
     """Para que el front pueda comprobar si hay sesión."""
@@ -132,12 +105,10 @@ def read_me(current_medico: Medico = Depends(get_current_medico)):
         "id": current_medico.medico_id,
         "username": current_medico.username,
         "email": current_medico.email,
+        "nombre": current_medico.nombre,
     }
 
 
-# =========================
-#   LOGOUT
-# =========================
 
 @router.post("/logout")
 def logout(response: Response):

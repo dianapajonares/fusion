@@ -1,7 +1,6 @@
 from datetime import datetime
 from pydantic import BaseModel, EmailStr
-from typing import Optional
-
+from typing import Optional, Any, Dict
 
 class PacienteBase(BaseModel):
     nombre: str
@@ -9,7 +8,7 @@ class PacienteBase(BaseModel):
     apellido_materno: Optional[str] = None
 
     fecha_nacimiento: datetime
-    sexo: Optional[str] = None               # "F", "M", "Otro"
+    sexo: Optional[str] = None               
     anio_diagnostico: Optional[int] = None
 
     enfermedades_cronicas: Optional[str] = None
@@ -28,6 +27,27 @@ class Paciente(PacienteBase):
 
     class Config:
         from_attributes = True
+#Captura manual
+class ManualEventBase(BaseModel):
+    patient_id: int
+    event_type: str          
+    timestamp: datetime
+    value: Optional[float] = None
+    unit: Optional[str] = None
+    subtype: Optional[str] = None
+    note: Optional[str] = None
+    extra: Optional[Dict[str, Any]] = None
+
+class ManualEventIn(ManualEventBase):
+    pass
+
+class ManualEventOut(ManualEventBase):
+    id: int
+
+    class Config:
+        orm_mode = True        
+
+
 
 #Médicos
 class MedicoBase(BaseModel):
@@ -38,9 +58,9 @@ class MedicoBase(BaseModel):
 class MedicoRegister(MedicoBase):
     password:str
 class MedicoCreate(MedicoBase):
-    password: str   # llega en texto plano en el request
+    password: str 
 
-class MedicoLogin(BaseModel):   # 👈 ESTE FALTABA
+class MedicoLogin(BaseModel): 
     username: str
     password: str
 class MedicoOut(MedicoBase):
