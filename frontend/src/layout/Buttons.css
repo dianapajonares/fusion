@@ -22,7 +22,6 @@
       transform 0.07s ease;
   }
   
-  /* Forma redondeada tipo “pastilla” opcional */
   .btn-round {
     border-radius: 999px;
   }

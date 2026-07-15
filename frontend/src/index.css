@@ -5,6 +5,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Ocultar barra de scroll en navegadores estándar */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+/* Ocultar barra de scroll en Chrome, Safari y Opera */
+::-webkit-scrollbar {
+  display: none;
 }
 
 code {

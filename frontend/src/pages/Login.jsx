@@ -21,7 +21,7 @@ function Login() {
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",  // 👈 PARA RECIBIR LA COOKIE
+        credentials: "include", 
         body: JSON.stringify({
           username: correo,
           password: contraseña,
@@ -42,7 +42,6 @@ function Login() {
         return;
       }
 
-      // Consumimos el body (aunque no lo usemos)
       await response.json();
       console.log("login ok, navegando a /pacientes");
 

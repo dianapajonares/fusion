@@ -7,15 +7,16 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
+  ReferenceLine
 } from "recharts";
 
-export function HbA1cChart({ data }) {
+export function HbA1cChart({ data, targetValue = 7.0 }) {
   if (!data || data.length === 0) {
     return <p className="chart-empty">Sin datos de HbA1c</p>;
   }
 
   return (
-    <div style={{ width: "100%", height: 160 }}>
+    <div style={{ width: "95%", height: 160 }}>
       <ResponsiveContainer>
         <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
           <CartesianGrid
@@ -47,13 +48,22 @@ export function HbA1cChart({ data }) {
             </linearGradient>
           </defs>
 
+          <ReferenceLine 
+            y={targetValue} 
+            stroke="#3b82f6" 
+            strokeDasharray="4 4" 
+            ifOverflow="extendDomain"
+            label={{ position: 'insideTopLeft', value: `Meta: ${targetValue}%`, fill: '#3b82f6', fontSize: 12, fontWeight: 500 }} 
+          />
+
           <Area
             type="monotone"
             dataKey="value"
             stroke="#0A2A66"
             strokeWidth={3}
             fill="url(#hba1cFill)"
-            activeDot={{ r: 4 }}
+            dot={{ r: 5, fill: '#FFFFFF', strokeWidth: 3, stroke: '#0A2A66' }}
+            activeDot={{ r: 8, fill: '#0A2A66', strokeWidth: 2, stroke: '#FFFFFF' }}
           />
         </AreaChart>
       </ResponsiveContainer>

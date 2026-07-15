@@ -7,7 +7,7 @@ import '../src/layout/Buttons.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* 💥 Envolver la aplicación con BrowserRouter 💥 */}
+   
     <BrowserRouter>
       <App />
     </BrowserRouter>

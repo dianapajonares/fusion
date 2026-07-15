@@ -52,7 +52,6 @@ export function TopBarTabs({ activeSection, onSectionChange, userName }) {
           aria-expanded="false"
         >
           <span className="user-avatar" aria-hidden="true">
-            {/* Podrías poner iniciales */}
             {userName?.charAt(0) || "D"}
           </span>
           <span className="user-name">{userName}</span>

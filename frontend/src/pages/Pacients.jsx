@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function PatientsList() {
   const [activeSection, setActiveSection] = useState("pacientes");
   const [patients, setPatients] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   // Función auxiliar para calcular edad
@@ -27,7 +28,7 @@ function PatientsList() {
       try {
         const response = await fetch("http://127.0.0.1:8000/api/v1/pacientes/", {
           method: "GET",
-          credentials: "include",  // 👈 Manda la cookie access_token
+          credentials: "include", 
         });
 
         if (response.status === 401) {
@@ -43,7 +44,6 @@ function PatientsList() {
 
         const data = await response.json();
 
-        // Añadir campo edad calculado
         const pacientesConEdad = data.map((p) => ({
           ...p,
           edad: calcularEdad(p.fecha_nacimiento),
@@ -68,7 +68,16 @@ function PatientsList() {
    
   };
 
-
+  const filteredPatients = patients.filter((p) => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      p.nombre?.toLowerCase().includes(query) ||
+      p.apellido_paterno?.toLowerCase().includes(query) ||
+      p.apellido_materno?.toLowerCase().includes(query) ||
+      p.historia_clinica_num?.toLowerCase().includes(query)
+    );
+  });
 
   return (
     <div className="app-root">
@@ -80,67 +89,96 @@ function PatientsList() {
 
       <main className="patients-main">
         <section className="patients-card" aria-labelledby="patients-title">
-          <h1 id="patients-title" className="patients-title">Pacientes</h1>
-
-          <div className="patients-table-wrapper">
-            <table className="patients-table">
-              <thead>
-                <tr>
-                  <th>
-                    Expediente<br />
-                    <span className="th-subtitle">Número</span>
-                  </th>
-
-                  <th>
-                    Apellido<br />
-                    <span className="th-subtitle">Paterno</span>
-                  </th>
-
-                  <th>
-                    Apellido<br />
-                    <span className="th-subtitle">Materno</span>
-                  </th>
-
-                  <th>
-                    Nombre<br />
-                    <span className="th-subtitle">Paciente</span>
-                  </th>
-
-                  <th>
-                    Edad<br />
-                    <span className="th-subtitle">Años</span>
-                  </th>
-
-                  <th>
-                    Acción<br />
-                    <span className="th-subtitle">Detalles</span>
-                  </th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {patients.map((p) => (
-                  <tr key={p.paciente_id}>
-                    <td>{p.historia_clinica_num}</td>
-                    <td>{p.apellido_paterno}</td>
-                    <td>{p.apellido_materno ?? "—"}</td>
-                    <td>{p.nombre}</td>
-                    <td>{p.edad}</td>
-                    <td>
-                      <button
-                        type="button"
-                        className="patients-action-btn"
-                        onClick={() => handleViewPatient(p.paciente_id)}
-                      >
-                        Ver información
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-
-            </table>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <h1 id="patients-title" className="patients-title" style={{ margin: 0, textAlign: 'left' }}>Pacientes</h1>
+              <span style={{ color: '#6b7280', fontSize: '14px', fontWeight: '500' }}>
+                {patients.length} pacientes registrados
+              </span>
+            </div>
+            <div className="patients-search-wrapper">
+              <svg className="patients-search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <input
+                type="text"
+                className="patients-search-input"
+                placeholder="Buscar por nombre, apellido o expediente"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </div>
+
+          {filteredPatients.length > 0 ? (
+            <div className="patients-table-wrapper">
+              <table className="patients-table">
+                <thead>
+                  <tr>
+                    <th>
+                      Expediente<br />
+                      <span className="th-subtitle">Número</span>
+                    </th>
+
+                    <th>
+                      Apellido<br />
+                      <span className="th-subtitle">Paterno</span>
+                    </th>
+
+                    <th>
+                      Apellido<br />
+                      <span className="th-subtitle">Materno</span>
+                    </th>
+
+                    <th>
+                      Nombre<br />
+                      <span className="th-subtitle">Paciente</span>
+                    </th>
+
+                    <th>
+                      Edad<br />
+                      <span className="th-subtitle">Años</span>
+                    </th>
+
+                    <th>
+                      Acción<br />
+                      <span className="th-subtitle">Detalles</span>
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {filteredPatients.map((p) => (
+                    <tr key={p.paciente_id}>
+                      <td>{p.historia_clinica_num}</td>
+                      <td>{p.apellido_paterno}</td>
+                      <td>{p.apellido_materno ?? "—"}</td>
+                      <td>{p.nombre}</td>
+                      <td>{p.edad}</td>
+                      <td>
+                        <button
+                          type="button"
+                          className="patients-action-btn"
+                          onClick={() => handleViewPatient(p.paciente_id)}
+                        >
+                          Ver información
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="patients-empty-state">
+              <div className="patients-empty-icon">
+                <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </div>
+              <p className="patients-empty-text">No se encontraron pacientes. Intenta con otro nombre o ajusta los filtros.</p>
+            </div>
+          )}
         </section>
       </main>
     </div>
