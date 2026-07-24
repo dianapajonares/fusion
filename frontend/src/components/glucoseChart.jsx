@@ -17,9 +17,7 @@ export function GlucoseChart({ data, events, filters }) {
 
   if (!data?.length) return <p>No hay datos</p>;
 
-  // =========================
-  // 🔹 UTILIDADES
-  // =========================
+ 
 
   const mergeEvents = (events, gapMinutes = 5) => {
     if (!events?.length) return [];
@@ -65,9 +63,7 @@ export function GlucoseChart({ data, events, filters }) {
     return "#6b7280";
   };
 
-  // =========================
-  // 🔹 PROCESAMIENTO
-  // =========================
+
 
   const processedData = useMemo(() => {
     return data.map((d) => ({
@@ -168,7 +164,7 @@ export function GlucoseChart({ data, events, filters }) {
         />
       </div>
 
-      {/* 🔹 GRÁFICA */}
+      {/* GRÁFICA */}
       <ResponsiveContainer width="100%" height={260}>
         <LineChart data={visibleData}>
           <CartesianGrid stroke="#f1f5f9" strokeDasharray="2 6" />

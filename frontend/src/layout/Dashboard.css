@@ -197,3 +197,36 @@
   .btn-icon--ghost:hover {
     background-color: #F3F4F6;  /* gris muy suave */
   }
+  .treatment-detail-card{
+    grid-column:1 / -1;
+    margin-top:-2px;
+    border:2px solid #C7D7FE;
+    border-top:none;
+    border-radius:0 0 18px 18px;
+    overflow:hidden;
+    padding:0;
+}
+
+.treatment-detail-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 24px;
+    background:#F8FBFF;
+    border-bottom:1px solid #E6EEF8;
+}
+
+.treatment-detail-header h2{
+    margin:0;
+    font-size:1.1rem;
+}
+
+.treatment-detail-header p{
+    margin:4px 0 0;
+    color:#6B7280;
+    font-size:.9rem;
+}
+
+.treatment-detail-body{
+    padding:24px;
+}

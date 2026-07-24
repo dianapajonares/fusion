@@ -13,7 +13,7 @@
     border-radius: 16px;
     box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
     padding: 24px 32px 32px;
-    max-width: 900px;   /* compacta al inicio */
+    max-width: 900px;   
     width: 100%;
     margin: 0 auto;
   }
@@ -195,7 +195,7 @@
     }
   }
   
-/* ====== Expanded Patient Panel ====== */
+/*  Expediente  */
 .expanded-patient-panel {
   display: flex;
   flex-direction: row;
@@ -325,7 +325,6 @@
   margin-left: 2px;
 }
 
-/* Column 1 Specific (Vertical list of items) */
 .epp-item {
   display: flex;
   align-items: flex-start;
@@ -358,7 +357,7 @@
   line-height: 1.4;
 }
 
-/* Bullets for Diseases and Meds */
+/* expediente */
 .epp-bullets {
   margin: 4px 0 0 0;
   padding-left: 18px;

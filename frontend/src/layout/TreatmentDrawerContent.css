@@ -1,0 +1,79 @@
+.drawer-section{
+    margin-bottom:28px;
+}
+
+.drawer-section-title{
+    font-size:13px;
+    font-weight:600;
+    text-transform:uppercase;
+    color:#6B7280;
+    letter-spacing:.04em;
+    margin-bottom:12px;
+}
+
+.drawer-card{
+    background:#F8FAFC;
+    border:1px solid #E5E7EB;
+    border-radius:12px;
+    padding:18px;
+}
+
+.therapy-chip{
+    display:inline-flex;
+    align-items:center;
+    padding:8px 16px;
+    border-radius:999px;
+    background:#E8F0FF;
+    color:#2B6CB0;
+    font-weight:600;
+}
+
+.drawer-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+}
+
+.drawer-row:not(:last-child){
+    border-bottom:1px solid #ECECEC;
+}
+
+.drawer-label{
+    color:#6B7280;
+}
+
+.drawer-value{
+    font-weight:600;
+}
+
+.adjustment-card{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+}
+
+.adjustment-positive{
+    color:#16A34A;
+    font-weight:600;
+}
+
+.adjustment-negative{
+    color:#DC2626;
+    font-weight:600;
+}
+.dose-chip{
+    background:#E8F5E9;
+    color:#166534;
+    padding:6px 12px;
+    border-radius:999px;
+    font-weight:600;
+    font-size:14px;
+}
+.therapy-value{
+    font-size:20px;
+    font-weight:700;
+    color:#1D4ED8;
+    letter-spacing:.5px;
+}

@@ -50,7 +50,6 @@ class ResultadoFusion(Base):
     indice_riesgo = Column(DECIMAL(5, 4), nullable=False)
     clasificacion = Column(String(50), nullable=False) 
 
-# 3. Función de Utilidad para la Base de Datos
 def get_db():
     db = SessionLocal()
     try:
